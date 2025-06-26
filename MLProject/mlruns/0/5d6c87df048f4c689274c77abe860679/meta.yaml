@@ -1,0 +1,15 @@
+artifact_uri: file:///E:/Source%20Code/Learn/LaskarAI/sistem_ml/Eksperimen_SML_Rizal/Workflow-CI/MLProject/mlruns/0/5d6c87df048f4c689274c77abe860679/artifacts
+end_time: null
+entry_point_name: ''
+experiment_id: '0'
+lifecycle_stage: active
+run_id: 5d6c87df048f4c689274c77abe860679
+run_name: ambitious-mouse-593
+run_uuid: 5d6c87df048f4c689274c77abe860679
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1750951019782
+status: 1
+tags: []
+user_id: rrm

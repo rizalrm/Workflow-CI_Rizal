@@ -1,0 +1,15 @@
+artifact_uri: file:///E:/Source%20Code/Learn/LaskarAI/sistem_ml/Eksperimen_SML_Rizal/Workflow-CI/MLProject/mlruns/0/e95c015f24aa43abb230c619a6daac93/artifacts
+end_time: 1750951407858
+entry_point_name: ''
+experiment_id: '0'
+lifecycle_stage: active
+run_id: e95c015f24aa43abb230c619a6daac93
+run_name: popular-koi-719
+run_uuid: e95c015f24aa43abb230c619a6daac93
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1750951351439
+status: 3
+tags: []
+user_id: rrm
