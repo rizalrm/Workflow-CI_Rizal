@@ -1,4 +1,4 @@
-name: MLflow Training CI
+name: MLflow Project CI - Train & Push Docker Image
 
 on:
   push:
@@ -7,19 +7,45 @@ on:
     branches: [main]
 
 jobs:
-  train:
+  train-and-dockerize:
     runs-on: ubuntu-latest
+
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
 
-      - name: Set up Miniconda
-        uses: conda-incubator/setup-miniconda@v3
+      - name: Set up Python
+        uses: actions/setup-python@v5
         with:
           python-version: 3.12.7
 
-      - name: Install MLflow
-        run: pip install mlflow
+      - name: Install dependencies
+        run: pip install mlflow scikit-learn pandas
 
-      - name: Run MLflow Project
+      - name: Run MLflow Project (local env)
         run: mlflow run MLProject --entry-point main --env-manager=local
+
+      - name: Upload artifacts (mlruns)
+        uses: actions/upload-artifact@v3
+        with:
+          name: mlruns
+          path: MLProject/mlruns
+
+      - name: Build Docker Image from MLflow Model
+        run: |
+          export RUN_ID=$(ls -td MLProject/mlruns/0/* | head -1 | xargs -n 1 basename)
+          echo "RUN_ID=$RUN_ID"
+          mlflow models build-docker -m MLProject/mlruns/0/$RUN_ID/artifacts/model -n iris-model
+
+      - name: Login to DockerHub
+        run: echo ${{ secrets.DOCKERHUB_TOKEN }} | docker login -u ${{ secrets.DOCKERHUB_USERNAME }} --password-stdin
+
+      - name: Push Docker Image
+        run: |
+          docker tag iris-model ${{ secrets.DOCKERHUB_USERNAME }}/iris-model:latest
+          docker push ${{ secrets.DOCKERHUB_USERNAME }}/iris-model:latest
+
+      # (Optional) Clean up docker images from runner
+      - name: Remove Docker image
+        run: docker rmi ${{ secrets.DOCKERHUB_USERNAME }}/iris-model:latest || true
+
