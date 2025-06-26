@@ -33,7 +33,7 @@ jobs:
 
       - name: Build Docker Image from MLflow Model
         run: |
-          export RUN_ID=$(ls -td MLProject/mlruns/0/* | head -1 | xargs -n 1 basename)
+          export RUN_ID=$(find MLProject/mlruns/0 -maxdepth 1 -type d ! -path "MLProject/mlruns/0" | sort -r | head -n 1 | xargs -n 1 basename)
           echo "RUN_ID=$RUN_ID"
           mlflow models build-docker -m MLProject/mlruns/0/$RUN_ID/artifacts/model -n iris-model
 
