@@ -6,7 +6,7 @@ from sklearn.model_selection import train_test_split
 from sklearn.metrics import accuracy_score
 
 parser = argparse.ArgumentParser()
-parser.add_argument('--data_path', type=str, default='iris_preprocessing.csv')
+parser.add_argument('--data_path', type=str, default='penguins_preprocessing.csv')
 args = parser.parse_args()
 
 mlflow.sklearn.autolog()
@@ -22,3 +22,6 @@ with mlflow.start_run():
     y_pred = clf.predict(X_test)
     acc = accuracy_score(y_test, y_pred)
     print("Akurasi Test:", acc)
+
+    mlflow.log_metric("accuracy", acc)
+    mlflow.sklearn.log_model(clf, "model")

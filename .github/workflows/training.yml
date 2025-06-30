@@ -35,17 +35,17 @@ jobs:
         run: |
           export RUN_ID=$(find MLProject/mlruns/0 -maxdepth 1 -type d ! -path "MLProject/mlruns/0" | sort -r | head -n 1 | xargs -n 1 basename)
           echo "RUN_ID=$RUN_ID"
-          mlflow models build-docker -m MLProject/mlruns/0/$RUN_ID/artifacts/model -n iris-model
+          mlflow models build-docker -m MLProject/mlruns/0/$RUN_ID/artifacts/model -n penguins-model
 
       - name: Login to DockerHub
         run: echo ${{ secrets.DOCKERHUB_TOKEN }} | docker login -u ${{ secrets.DOCKERHUB_USERNAME }} --password-stdin
 
       - name: Push Docker Image
         run: |
-          docker tag iris-model ${{ secrets.DOCKERHUB_USERNAME }}/iris-model:latest
-          docker push ${{ secrets.DOCKERHUB_USERNAME }}/iris-model:latest
+          docker tag penguins-model ${{ secrets.DOCKERHUB_USERNAME }}/penguins-model:latest
+          docker push ${{ secrets.DOCKERHUB_USERNAME }}/penguins-model:latest
 
       # (Optional) Clean up docker images from runner
       - name: Remove Docker image
-        run: docker rmi ${{ secrets.DOCKERHUB_USERNAME }}/iris-model:latest || true
+        run: docker rmi ${{ secrets.DOCKERHUB_USERNAME }}/penguins-model:latest || true
 
